@@ -1,13 +1,12 @@
 #include "frequencies.h"
 #include "compilationEngine.h"
-#define speaker 10 // pin no. for speaker
+#define highSpkr 10 // pin no. for high speaker
+#define bassSpkr 10 // pin no. for bass speaker
 int xOver = 499;
 
 
-//Lawrence's playNote void here (replacement for Oliver's placeholder void)
-
-void playTone(int buzzer, unsigned int note, int len) {
-  tone(buzzer, note, len);
+void Tone(int buzzer, unsigned int note, int len) {
+  if (note < 10000 && len < 5000){ tone(buzzer, note, len); }
 }
 
 void playSong(int startPos) {
@@ -24,8 +23,11 @@ void playSong(int startPos) {
     line[1] = song[pointerLoc][1];
     line[2] = song[pointerLoc][2];
     if (line[0] == "") { break; } else {
-      if (line[0] == 0) {
-        //Lawrence's other bit here
+      if (line[0] == 0 && line[2] < 5000) {
+        if (line[1] > xOver) { playTone(highSpkr, line[1], line[2]); }
+        else { playTone(playTone(bassSpkr, line[1], line[2])); }
+        delay(10);
+        pointerLoc++;
       } else {
         //Harry's stuff here
       }
