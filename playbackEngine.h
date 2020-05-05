@@ -29,7 +29,36 @@ void playSong(int startPos) {
         delay(10);
         pointerLoc++;
       } else {
-        //Harry's stuff here
+        if (line[0] == 1 && inLoop == 0) {
+          loopedFrom = pointerLoc;
+          pointerLoc = line[1];
+          inLoop = 1;
+        }
+        else if (line[0] == 1 && inLoop == 1 && loopedFrom == pointerLoc) {
+          inLoop = 0;
+          pointerLoc++;
+        }
+        else if (line[0] == 2 && inLoop == 1) {
+          if (line[2] == 0) {
+            pointerLoc = line[1];
+          }
+          else if (line[2] != 0 && line[2] == loopedFrom) {
+            pointerLoc == line[1];
+            pointerLoc++;
+          }
+        }
+        else if (line[0] == 3 && inLoop == 1) {
+          if (line[2] == 0) {
+            pointerLoc = len;
+          }
+          else if (line[2] != 0 && line[2] == loopedFrom) {
+            pointerLoc == line[1];
+          } else {
+            pointerLoc++;
+          }
+        }
+        else if (line[0] == 4) { pointerLoc = len; }
+        else { pointerLoc++; }
       }
     }
   }
