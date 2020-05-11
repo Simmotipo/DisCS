@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Authors>Oliver Simpson</Authors>
+    <Company>Solent University</Company>
+    <Copyright>(c) Oliver Simpson 2020</Copyright>
+    <Description>Discord Controlled Sequencer Arduino Information Relay Bot</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Discord.Net" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\Data\" />
+  </ItemGroup>
+
+</Project>

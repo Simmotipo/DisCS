@@ -1,0 +1,11 @@
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\bin\Release\netcoreapp2.0\BirthdayBot.deps.json
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\bin\Release\netcoreapp2.0\BirthdayBot.runtimeconfig.json
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\bin\Release\netcoreapp2.0\BirthdayBot.runtimeconfig.dev.json
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\bin\Release\netcoreapp2.0\BirthdayBot.dll
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\bin\Release\netcoreapp2.0\BirthdayBot.pdb
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\obj\Release\netcoreapp2.0\BirthdayBot.csprojResolveAssemblyReference.cache
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\obj\Release\netcoreapp2.0\BirthdayBot.csproj.CoreCompileInputs.cache
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\obj\Release\netcoreapp2.0\BirthdayBot.AssemblyInfoInputs.cache
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\obj\Release\netcoreapp2.0\BirthdayBot.AssemblyInfo.cs
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\obj\Release\netcoreapp2.0\BirthdayBot.dll
+C:\Users\simmo\source\repos\BirthdayBot\BirthdayBot\obj\Release\netcoreapp2.0\BirthdayBot.pdb

@@ -1,0 +1,11 @@
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\bin\Release\netcoreapp2.0\DisCS.deps.json
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\bin\Release\netcoreapp2.0\DisCS.runtimeconfig.json
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\bin\Release\netcoreapp2.0\DisCS.runtimeconfig.dev.json
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\bin\Release\netcoreapp2.0\DisCS.dll
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\bin\Release\netcoreapp2.0\DisCS.pdb
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\obj\Release\netcoreapp2.0\DisCS.csproj.CoreCompileInputs.cache
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\obj\Release\netcoreapp2.0\DisCS.AssemblyInfoInputs.cache
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\obj\Release\netcoreapp2.0\DisCS.AssemblyInfo.cs
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\obj\Release\netcoreapp2.0\DisCS.dll
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\obj\Release\netcoreapp2.0\DisCS.pdb
+C:\Users\simmo\source\repos\DisCS Relay\DisCS\obj\Release\netcoreapp2.0\DisCS.csprojResolveAssemblyReference.cache
