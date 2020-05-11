@@ -19,8 +19,10 @@ void discord_send(String content) {
   Serial.println("[HTTP] Connecting to Discord...");
   Serial.println("[HTTP] Message: " + content);
   Serial.println("[HTTP] TTS: " + discord_tts);
+
+  //Send string content to Discord as JSON
   http_client.post(discord_webhook, "application/json", "{\"content\":\"" + content + "\", \"tts\":" + discord_tts + "}");
-  // read the status code and body of the response
+  // read the status code and body of the response and print them for Debugging
   int statusCode = http_client.responseStatusCode();
   String response = http_client.responseBody();
 

@@ -18,6 +18,7 @@ IPAddress ip;
 WiFiServer server(80);
 
 void setup() {
+  //Set default pin settings
   pinMode(13, OUTPUT);
   pinMode(12, INPUT);
   pinMode(11, INPUT);
@@ -41,11 +42,6 @@ void setup() {
   }
 }
 
-void updateNetwork()
-{
-  
-}
-
 //Connect to WiFi
 void connect() {
   digitalWrite(13, LOW);
@@ -56,26 +52,26 @@ void connect() {
   status = WiFi.begin(ssid, pass);
   wifiStat[0] = 1;
 
-  // wait 5 seconds for connection:
+  // wait 5 seconds for connectionn to ensure connection:
   delay(5000);
   if (status != WL_CONNECTED) { wifiStat[0] = 3; } else { printWiFiData(); wifiStat[0] = 2; }
 
-  // you're connected now, so register with discord bot:
+  // you're connected now, so attempt automatic registration with discord bot:
   if (wifiStat[0] == 2) {
     digitalWrite(13, HIGH);
     Serial.println("/disc register " + String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]));
     discord_send("/disc register " + String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]));
     wifiStat[0] = 4;
     server.begin();                           // start the web server on port 80
-    printServerStatus();                        // you're connected now, so print out the status
+    printServerStatus();                      // Print out the status
   }
   Serial.println("Connection Attempt Complete");
 }
 
 //Process WiFi Connectivity Status
 void processStatus() {
-  if (wifiStat[0] == 0) { connect(); }
-  if (wifiStat[0] == 3) {
+  if (wifiStat[0] == 0) { connect(); } //If never connect, attempt connection
+  if (wifiStat[0] == 3) { //If disconnected, flash LED
     while (wifiStat[0] == 3) {
       delay(500);
       if (wifiStat[1] == 0) { wifiStat[1] = 1; digitalWrite(13, HIGH); } else { wifiStat[1] = 0; digitalWrite(13, LOW); }
@@ -128,7 +124,7 @@ void printWiFiData() {
 
 void loop() {
   processStatus();
-  WiFiClient client = server.available();   // listen for incoming clients
+  WiFiClient client = server.available();     // listen for incoming clients
     if (client) {                             // if you get a client,
       Serial.println("new client");           // print a message out the serial port
       String currentLine = "";                // make a String to hold incoming data from the client
@@ -161,13 +157,15 @@ void loop() {
 }
 
 
-////
+////WARNING: "FUN" STUFF BELOW
 
 
 void parseHTTP(String currentLine) {
   String args[] = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+  //^Way longer than it will realistically ever need to be but better safe than sorry
   // Check to see if the client request was a command
   if (currentLine.endsWith(";;") and millis() > lastMillis + 25) {
+    //We know the request came from Discord.
     int m = 0;
     int n = 0;
     while (m < currentLine.length()) {
@@ -179,24 +177,28 @@ void parseHTTP(String currentLine) {
     lastMillis = millis();
   }
   else if (currentLine.startsWith ("GET") and currentLine.endsWith("/run") and millis() > lastMillis + 25) {
+    //We know it's time to prepare for something to go wrong. Oh, and that the request came from a browser, of course. [Just kidding I fixed all the bugs. Yes, I still have flashbacks].
+    //Mostly deprecated. Only used for setting pins as input/output and output pins as high/low
     int m = 0;
     int n = 0;
     while (m < currentLine.length()) {
       if (String(currentLine[m]) == "/" || String(currentLine[m]) == ";") { n = n + 1; } else { args[n] = args[n] + currentLine[m]; }
+      //^ If current char indicates end of arg, move to the next arg, else append the char to the arg (ie process the arg char by char)
       m = m + 1;
       lastMillis = millis();
     }
-    Serial.println("WEB >> " + currentLine);
-    n = 3;
-    while (n < 24) {
+    Serial.println("WEB >> " + currentLine); //Print line to console for debugging
+    n = 3; //Start at 3 so all the HTTP pre-amble
+    while (n < 24) { //"shift" all args three places to the left, so the first arg is at arg[0] not arg[3]
       args[n-3] = args[n];
       n = n + 1;
     }
     args[20] = ""; args[21] = ""; args[23] = ""; args[24] = "";
-    processCMD(args);
+    processCMD(args); //Actually do the stuff now
   }
-  else if (currentLine.startsWith("GET /HTP?") and millis() > lastMillis + 25) {
-    Serial.println("HTP >> " + currentLine);
+  else if (currentLine.startsWith("GET /HTP?") and millis() > lastMillis + 25) { //The data source is browser form
+    Serial.println("HTP >> " + currentLine); //Print line to console for debugging
+    //From here, take the string and look for all the end-of-arg characters (x) to process the args char by char to be able to reconstruct a string array (args[])
     String cmdConstruct = "";
     int z = 9;
     while (String(currentLine[z]) != String("x") and z != currentLine.length()) {
@@ -219,7 +221,7 @@ void parseHTTP(String currentLine) {
       while (z != currentLine.length() and String(currentLine[z]) != String("x")) { z++; }
       z = z + 2;
     }
-    processCMD(args);
+    processCMD(args); //And do the actual stuff now
   }
 }
 
@@ -229,27 +231,21 @@ void sendHTTP(WiFiClient client) {
   client.println("HTTP/1.1 200 OK");
   client.println("Content-type:text/html");
   client.println();
-
+  
   // the content of the HTTP response follows the header:
+  
+  //The HTML section which still gives me nightmares...
+  //Send HTML code line-by line to construct browser page
+
+  //Pin Input/Output and High/Low setting
   int q = 0;
-  //client.print("<p>digitalWrite</p>");
   client.print("<p></p><form action=\"/HTP\"> <label for=\"digitalWritex\">Pin #</label> <input type=\"number\" id=\"digitalWritex\" name=\"digitalWritex\" value=\"0\">  <label for=\"x\">State</label> <select id=\"x\" name=\"x\"><option value=\"HIGH\">HIGH</option><option value=\"LOW\">LOW</option></select> <input type=\"submit\" value=\"digitalWrite\"> </form>");
   client.print("<p></p><form action=\"/HTP\"> <label for=\"pinModex\">Pin #</label> <input type=\"number\" id=\"pinModex\" name=\"pinModex\" value=\"0\">  <label for=\"x\">State</label> <select id=\"x\" name=\"x\"><option value=\"INPUT\">INPUT</option><option value=\"OUTPUT\">OUTPUT</option></select> <input type=\"submit\" value=\"pinMode\"> </form>");
-  /*while (q <= 13)
-  {
-    client.print("<a href=\"/digitalWrite/" + String(q) + "/HIGH/run\">" + String(q) + " H </a><span>/</span>" + "<a href=\"/digitalWrite/" + String(q) + "/LOW/run\">" + String(q) + " L </a><span>/</span>");
-    q = q + 1;
-  }
-  client.print("<p>pinMode</p>");
-  q = 0;
-  while (q <= 13)
-  {
-    client.print("<a href=\"/pinMode/" + String(q) + "/INPUT/run\">" + String(q) + " I </a><span>/</span>" + "<a href=\"/pinMode/" + String(q) + "/OUTPUT/run\">" + String(q) + " O </a><span>/</span>");
-    q = q + 1;
-  }*/
-  
+
+  //Forms for addition/playback of notes, song and instructions
   client.print("<p></p><form action=\"/HTP\"> <label for=\"playNotex\">Play a Note Now  | Frequency (Hz)</label> <input type=\"number\" id=\"playNotex\" name=\"playNotex\" value=\"440\"> <label for=\"x\">Duration (ms)</label> <input type=\"number\" id=\"x\" name=\"x\" value=\"250\"><input type=\"submit\" value=\"Play\"> </form>");
   client.print("<p></p><form action=\"/HTP\"> <label for=\"addNotex\">Add Note to Song | Frequency (Hz)</label> <input type=\"number\" id=\"addNotex\" name=\"addNotex\" value=\"440\"> <label for=\"x\">Duration (ms)</label> <input type=\"number\" id=\"x\" name=\"x\" value=\"250\"><input type=\"submit\" value=\"Add\"> </form>");
+  client.print("<p></p><form action=\"/HTP\"> <label for=\"addInstructionx\">Add a CMD to Song | OpCode</label> <input type=\"number\" id=\"addInstructionx\" name=\"addInstructionx\" value=\"1\"> <label for=\"x\">Arg 1</label> <input type=\"number\" id=\"x\" name=\"x\" value=\"0\"><label for=\"x\">Arg 2</label> <input type=\"number\" id=\"x\" name=\"x\" value=\"0\"><input type=\"submit\" value=\"Add\"> </form>");
   client.print("<p></p><form action=\"/HTP\"> <label for=\"pointerLocx\">Song Edit Cursor | Location</label> <input type=\"number\" id=\"pointerLocx\" name=\"pointerLocx\" value=\"0\"> <input type=\"submit\" value=\"Move Cursor\"> </form>");
   client.print("<p></p><form action=\"/HTP\"> <label for=\"playSongx\">Play the Song    | Start Position</label> <input type=\"number\" id=\"playSongx\" name=\"playSongx\" value=\"0\"> <input type=\"submit\" value=\"Play\"> </form>");
   
